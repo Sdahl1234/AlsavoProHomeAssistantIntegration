@@ -32,6 +32,7 @@ class AlsavoProClimate(AlsavoProEntity, ClimateEntity):
         self.coordinator = coordinator
         self._data_handler = self.coordinator.data_handler
         self._name = self._data_handler.name
+        self._enable_turn_on_off_backwards_compatibility = False
 
     @property
     def supported_features(self):
@@ -95,6 +96,14 @@ class AlsavoProClimate(AlsavoProEntity, ClimateEntity):
         """Return the list of available hvac operation modes."""
         return ["Silent", "Smart", "Powerful"]
 
+    async def async_turn_on(self) -> None:
+        """Turn the entity on."""
+        await self.async_set_hvac_mode(HVACMode.AUTO)
+
+    async def async_turn_off(self) -> None:
+        """Turn the entity off."""
+        await self.async_set_hvac_mode(HVACMode.OFF)
+
     async def async_set_hvac_mode(self, hvac_mode):
         """Set hvac mode."""
         hvac_mode_actions = {
@@ -103,7 +112,6 @@ class AlsavoProClimate(AlsavoProEntity, ClimateEntity):
             HVACMode.HEAT: self._data_handler.set_heating_mode,
             HVACMode.AUTO: self._data_handler.set_auto_mode,
         }
-
         action = hvac_mode_actions.get(hvac_mode)
         if action:
             await action()
