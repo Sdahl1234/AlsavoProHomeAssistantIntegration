@@ -145,9 +145,6 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_devices):
                 coordinator, None, "Alarm code 4", "", 51, False, "mdi:bell-alert"
             ),
             AlsavoProSensor(
-                coordinator, None, "Alarm code 4", "", 51, False, "mdi:bell-alert"
-            ),
-            AlsavoProSensor(
                 coordinator,
                 None,
                 "System status code",
