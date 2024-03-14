@@ -1,9 +1,9 @@
 {
   "domain": "alsavopro",
   "name": "AlsavoPro",
-  "documentation": "https://github.com/goev/AlsavoProHomeAssistantIntegration",
+  "documentation": "https://github.com/Sdahl1234/AlsavoProHomeAssistantIntegration",
   "requirements": [],
   "codeowners": [],
   "config_flow": true,
-  "version": "0.0.2"
+  "version": "1.0.1"
 }
