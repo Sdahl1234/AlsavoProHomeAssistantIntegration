@@ -1,4 +1,5 @@
 """Sensor for AlsavPro."""
+
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.core import HomeAssistant
 
@@ -272,13 +273,12 @@ class AlsavoProSensorOperatingMode(AlsavoProEntity, SensorEntity):
             if self._dataIdx == 4:
                 if val & 0 == 0:
                     return "Køling"
-                elif val & 1 == 1:
+                if val & 1 == 1:
                     return "Opvarmning"
-                elif val & 2 == 2:
+                if val & 2 == 2:
                     return "Auto"
             return val  # self._data_handler.get_config_value(self._dataIdx)
-        else:
-            return self._data_handler.get_status_value(self._dataIdx)
+        return self._data_handler.get_status_value(self._dataIdx)
 
     @property
     def icon(self):

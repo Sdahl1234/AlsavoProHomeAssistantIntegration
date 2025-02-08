@@ -1,8 +1,9 @@
 """Alsavo Pro pool heat pump integration."""
+
+# import async_timeout
+from asyncio import timeout
 from datetime import timedelta
 import logging
-
-import async_timeout
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -27,7 +28,7 @@ PLATFORMS = [
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup(hass: HomeAssistant, config):  # noqa: D103
+async def async_setup(hass: HomeAssistant, config):
     """Async setup."""
     return True
 
@@ -119,8 +120,8 @@ class AlsavoProDataCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         _LOGGER.debug("_async_update_data")
         try:
-            async with async_timeout.timeout(10):
+            async with timeout(10):
                 await self.data_handler.update()
                 return self.data_handler
-        except Exception as ex:  # pylint: disable=broad-except
+        except Exception as ex:  # pylint: disable=broad-except  # noqa: BLE001
             _LOGGER.debug(f"_async_update_data timed out {ex}")  # noqa: G004

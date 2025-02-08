@@ -1,4 +1,5 @@
 """Udpclient."""
+
 import asyncio
 import logging
 
@@ -68,8 +69,8 @@ class UDPClient:
 
         try:
             data = await asyncio.wait_for(future, timeout=5.0)
-            return data, b"0"
-        except asyncio.TimeoutError:
+            return data, b"0"  # noqa: TRY300
+        except asyncio.TimeoutError:  # noqa: UP041
             _LOGGER.error("Timeout: No response from server in 5 seconds")
             return None
         finally:

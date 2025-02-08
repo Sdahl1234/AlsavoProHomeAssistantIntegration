@@ -1,4 +1,5 @@
 """Alsavo Pro Ctrl."""
+
 from datetime import datetime, timezone
 from enum import Enum
 import hashlib
@@ -48,7 +49,7 @@ class AlsavoPro:
             data = await self._session.query_all()
             if data is not None:
                 self._data = data
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:  # pylint: disable=broad-except  # noqa: BLE001
             if self._update_retries < MAX_UPDATE_RETRIES:
                 self._update_retries += 1
                 await self.update()
@@ -69,7 +70,7 @@ class AlsavoPro:
                 self._password,
             )
             await self._session.set_config(idx, value)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:  # pylint: disable=broad-except  # noqa: BLE001
             if self._set_retries < MAX_SET_CONFIG_RETRIES:
                 self._set_retries += 1
                 await self.set_config(idx, value)
@@ -371,7 +372,7 @@ class AuthChallenge:
         unpacked_data = struct.unpack(format_string, data[16:24])
 
         # Create a new instance of the class and initialize its attributes
-        obj = AuthChallenge(
+        return AuthChallenge(
             packet_hdr,
             unpacked_data[0],
             unpacked_data[1],
@@ -379,8 +380,6 @@ class AuthChallenge:
             unpacked_data[3],
             unpacked_data[4],
         )
-
-        return obj
 
     @property
     def is_authorized(self):
@@ -515,7 +514,7 @@ class QueryResponse:
                 obj.__config = payload
             if payload.subType == 3:
                 obj.__deviceInfo = payload
-            obj.__payloads.append(payload)
+            obj.__payloads.append(payload)  # noqa: SLF001
             idx += payload.size + 8
 
         return obj
