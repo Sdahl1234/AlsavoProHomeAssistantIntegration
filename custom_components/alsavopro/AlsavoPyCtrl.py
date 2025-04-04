@@ -422,7 +422,7 @@ class Payload:
 
     def get_value(self, idx):
         """Get value."""
-        if idx - self.startIdx < 0 or idx - self.startIdx > self.data.__len__():
+        if idx - self.startIdx < 0 or idx - self.startIdx > len(self.data):
             return 0
         return self.data[idx - self.startIdx]
 
@@ -506,7 +506,7 @@ class QueryResponse:
         obj = QueryResponse(unpacked_data[0], unpacked_data[1])
         idx = 4
 
-        while idx < data.__len__():
+        while idx < len(data):
             payload = Payload.unpack(data[idx:])
             if payload.subType == 1:
                 obj.__status = payload
@@ -514,7 +514,7 @@ class QueryResponse:
                 obj.__config = payload
             if payload.subType == 3:
                 obj.__deviceInfo = payload
-            obj.__payloads.append(payload)  # noqa: SLF001
+            obj.__payloads.append(payload)
             idx += payload.size + 8
 
         return obj
@@ -578,9 +578,7 @@ class AlsavoSocketCom:
         _LOGGER.debug(f"send_and_rcv_packet(payload, {cmd})")  # noqa: G004
         if self.CSID is not None and self.DSIS is not None:
             return await self.send_and_receive(
-                PacketHeader(
-                    0x32, 0, self.CSID, self.DSIS, cmd, payload.__len__()
-                ).pack()
+                PacketHeader(0x32, 0, self.CSID, self.DSIS, cmd, len(payload)).pack()
                 + payload
             )
         return None
@@ -590,9 +588,7 @@ class AlsavoSocketCom:
         _LOGGER.debug(f"send_packet(payload, {cmd})")  # noqa: G004
         if self.CSID is not None and self.DSIS is not None:
             await self.send(
-                PacketHeader(
-                    0x32, 0, self.CSID, self.DSIS, cmd, payload.__len__()
-                ).pack()
+                PacketHeader(0x32, 0, self.CSID, self.DSIS, cmd, len(payload)).pack()
                 + payload
             )
 
@@ -604,7 +600,7 @@ class AlsavoSocketCom:
         )
         self.lstConfigReqTime = datetime.now()
         if resp is None:
-            raise Exception("query_all: no response")  # pylint: disable=broad-except
+            raise Exception("query_all: no response")  # pylint: disable=broad-except  # noqa: TRY002
         return QueryResponse.unpack(resp[0][16:])
 
     async def set_config(self, idx: int, value: int):
@@ -655,7 +651,7 @@ class AlsavoSocketCom:
 
         response = await self.send_auth_response(ctx)
 
-        if response is None or response[0].__len__() == 0:
+        if response is None or len(response[0]) == 0:
             raise ConnectionError(
                 "Server not responding to auth response, disconnecting."
             )

@@ -269,14 +269,14 @@ class AlsavoProSensorOperatingMode(AlsavoProEntity, SensorEntity):
         """Returning native."""
         # Hent data fra data_handler her
         if self._config:
-            val = self._data_handler.get_config_value(self._dataIdx)
+            val = self._data_handler.get_config_value(self._dataIdx) & 3
             if self._dataIdx == 4:
-                if val & 0 == 0:
-                    return "Køling"
-                if val & 1 == 1:
-                    return "Opvarmning"
                 if val & 2 == 2:
                     return "Auto"
+                if val & 1 == 1:
+                    return "Opvarmning"
+                if val & 0 == 0:
+                    return "Køling"
             return val  # self._data_handler.get_config_value(self._dataIdx)
         return self._data_handler.get_status_value(self._dataIdx)
 
@@ -288,7 +288,7 @@ class AlsavoProSensorOperatingMode(AlsavoProEntity, SensorEntity):
     @property
     def options(self):
         """Options."""
-        return ["Auto", "Køling", "Ukendt"]
+        return ["Auto", "Køling", "Opvarmning"]
 
 
 class AlsavoProSensorPowerMode(AlsavoProEntity, SensorEntity):

@@ -8,8 +8,8 @@ POWER_MODE_MAP = {0: "Silent", 1: "Smart", 2: "Powerful"}
 MODE_TO_CONFIG = {
     0: 2,  # Cool
     1: 1,  # Heat
-    2: 3,
-}  # Auto
+    2: 3,  # Auto
+}
 
 # Errors
 NO_WATER_FLUX = "No water flux or water flow switch failure.\n\r"
