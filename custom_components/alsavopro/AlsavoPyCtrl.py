@@ -437,7 +437,7 @@ class Payload:
             unpacked_data[3],
             unpacked_data[4],
         )
-        if obj.subType == 1 or obj.subType == 2:  # noqa: PLR1714
+        if obj.subType in (1, 2):
             obj.data = struct.unpack(
                 ">" + "H" * (obj.size // 2), data[12 : 12 + obj.size]
             )
@@ -459,23 +459,23 @@ class QueryResponse:
         """Init."""
         self.action = action
         self.parts = parts
-        self.__payloads = []
-        self.__status = None
-        self.__config = None
-        self.__deviceInfo = None
+        self._payloads = []
+        self._status = None
+        self._config = None
+        self._deviceInfo = None
 
     def get_status_value(self, idx: int):
         """Status value."""
-        if self.__status is None:
+        if self._status is None:
             return 0
-        return self.__status.get_value(idx)
+        return self._status.get_value(idx)
 
     def get_config_value(self, idx: int):
         """Config value."""
-        if self.__config is None:
+        if self._config is None:
             return 0
 
-        return self.__config.get_value(idx)
+        return self._config.get_value(idx)
 
     def get_signed_status_value(self, idx: int):
         """Signed status value."""
@@ -509,12 +509,12 @@ class QueryResponse:
         while idx < len(data):
             payload = Payload.unpack(data[idx:])
             if payload.subType == 1:
-                obj.__status = payload
+                obj._status = payload
             elif payload.subType == 2:
-                obj.__config = payload
+                obj._config = payload
             if payload.subType == 3:
-                obj.__deviceInfo = payload
-            obj.__payloads.append(payload)
+                obj._deviceInfo = payload
+            obj._payloads.append(payload)
             idx += payload.size + 8
 
         return obj

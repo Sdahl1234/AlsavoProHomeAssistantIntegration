@@ -62,7 +62,7 @@ class UDPClient:
     async def send_rcv(self, bytes_to_send):
         """Send rcv."""
         future = self.loop.create_future()
-        transport, protocol = await self.loop.create_datagram_endpoint(
+        transport, _protocol = await self.loop.create_datagram_endpoint(
             lambda: self.EchoClientProtocol(bytes_to_send, future),
             remote_addr=(self.server_host, self.server_port),
         )
@@ -78,7 +78,7 @@ class UDPClient:
 
     async def send(self, bytes_to_send):
         """Send."""
-        transport, protocol = await self.loop.create_datagram_endpoint(
+        transport, _protocol = await self.loop.create_datagram_endpoint(
             lambda: self.SimpleClientProtocol(bytes_to_send),
             remote_addr=(self.server_host, self.server_port),
         )
