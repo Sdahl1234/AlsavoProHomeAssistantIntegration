@@ -132,7 +132,7 @@ class AlsavoProClimate(AlsavoProEntity, ClimateEntity):
             await self.coordinator.async_request_refresh()
 
     @property
-    def temperature_unit(self):
+    def native_temperature_unit(self):
         """Return the unit of measurement which this device uses."""
         return UnitOfTemperature.CELSIUS
 
@@ -147,12 +147,12 @@ class AlsavoProClimate(AlsavoProEntity, ClimateEntity):
         return self._data_handler.get_temperature_from_status(55)
 
     @property
-    def current_temperature(self):
+    def native_current_temperature(self):
         """Return the current temperature."""
         return self._data_handler.water_in_temperature
 
     @property
-    def target_temperature(self):
+    def native_target_temperature(self):
         """Return the temperature we try to reach."""
         return self._data_handler.target_temperature
 

@@ -28,6 +28,11 @@ PLATFORMS = [
 _LOGGER = logging.getLogger(__name__)
 
 
+def _to_str(value: object) -> str | None:
+    """Return the value as a string, keeping None."""
+    return None if value is None else str(value)
+
+
 async def async_setup(hass: HomeAssistant, config):
     """Async setup."""
     return True
@@ -104,8 +109,8 @@ class AlsavoProDataCoordinator(DataUpdateCoordinator):
             serial_number=self.config_entry.data.get(SERIAL_NO),  # "1234",
             # model=self.data_handler.devicetype,
             name=self.name,  # self.system["name"],
-            sw_version=self.data_handler.sw_code,  # 404,  # self.system.get("softwareversion"),
-            hw_version=self.data_handler.hw_code,
+            sw_version=_to_str(self.data_handler.sw_code),
+            hw_version=_to_str(self.data_handler.hw_code),
         )
 
     @property

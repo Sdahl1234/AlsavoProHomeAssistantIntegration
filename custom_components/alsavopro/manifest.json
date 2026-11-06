@@ -4,6 +4,7 @@
   "documentation": "https://github.com/Sdahl1234/AlsavoProHomeAssistantIntegration",
   "requirements": [],
   "codeowners": [],
+  "iot_class": "local_polling",
   "config_flow": true,
-  "version": "1.0.4"
+  "version": "1.0.5"
 }
